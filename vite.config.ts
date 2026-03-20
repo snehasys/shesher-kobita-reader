@@ -153,6 +153,7 @@ function vitePluginManusDebugCollector(): Plugin {
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
+  base: process.env.GITHUB_ACTIONS ? "/shesher-kobita-reader/" : "/",
   plugins,
   resolve: {
     alias: {
