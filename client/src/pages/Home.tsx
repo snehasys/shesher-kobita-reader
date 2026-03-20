@@ -6,10 +6,12 @@
 
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { BookOpen, Feather, Moon, Sun } from "lucide-react";
+import { BookOpen, Feather, Moon, Sun, BookMarked, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import bookData from "@/data/bookData.json";
 import type { BookData } from "@/lib/types";
 import { useTheme } from "@/contexts/ThemeContext";
+import { getStoredProgress, formatTimeAgo, clearProgress, type ReadingProgress } from "@/hooks/useReadingProgress";
 
 const data = bookData as BookData;
 
@@ -21,6 +23,22 @@ const ORNAMENT_URL =
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
+  const [progress, setProgress] = useState<ReadingProgress | null>(null);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    const stored = getStoredProgress();
+    if (stored && stored.scrollPercent > 0) {
+      setProgress(stored);
+    }
+  }, []);
+
+  const handleDismiss = () => {
+    setDismissed(true);
+    clearProgress();
+  };
+
+  const showResume = progress && !dismissed;
 
   return (
     <div className="min-h-screen bg-background">
@@ -61,15 +79,9 @@ export default function Home() {
             >
               শেষের কবিতা
             </h1>
-            <h2
-              className="text-white/80 text-2xl sm:text-3xl lg:text-4xl font-light italic mb-8"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              The Last Poem
-            </h2>
 
             {/* Bengali poem overlay */}
-            <div className="border-l-2 border-white/30 pl-6 mb-8">
+            <div className="border-l-2 border-white/30 pl-6 mt-6 mb-8">
               <p
                 className="text-white/70 text-base sm:text-lg leading-relaxed mb-2"
                 style={{ fontFamily: "var(--font-bengali)", lineHeight: 2 }}
@@ -82,12 +94,7 @@ export default function Home() {
               >
                 ছিন্ন করো যদি, আরো বাঁধে সন্ধি।
               </p>
-              <p
-                className="text-white/50 text-sm italic mt-3"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                "The path was bound by a bondless knot, / Sever it, and it binds yet more."
-              </p>
+
             </div>
 
             <Link href="/chapter/1">
@@ -104,6 +111,54 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Resume Reading Banner */}
+      {showResume && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="max-w-3xl mx-auto px-6 pt-6"
+        >
+          <div className="relative flex items-center gap-4 px-5 py-4 bg-card border border-border/60 rounded-sm shadow-sm">
+            <BookMarked size={22} className="text-primary/70 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p
+                className="text-sm text-foreground/80"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                Continue reading{" "}
+                <span style={{ fontFamily: "var(--font-bengali)", fontWeight: 500 }}>
+                  {progress.chapterTitle.split(" — ")[0]}
+                </span>
+              </p>
+              <p
+                className="text-xs text-muted-foreground mt-0.5"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                Chapter {progress.chapterNumber} &middot; {progress.scrollPercent}% read &middot; {formatTimeAgo(progress.timestamp)}
+              </p>
+            </div>
+            <Link href={`/chapter/${progress.chapterNumber}`}>
+              <motion.span
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm rounded-sm hover:opacity-90 transition-opacity"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                Resume
+              </motion.span>
+            </Link>
+            <button
+              onClick={handleDismiss}
+              className="p-1.5 rounded-sm hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Dismiss"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Ornament divider */}
       <div className="flex justify-center py-6">
