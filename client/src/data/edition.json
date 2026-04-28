@@ -1,0 +1,18 @@
+{
+  "edition": "First Digital Edition",
+  "version": "1.0.0",
+  "buildId": "3d1df5f6",
+  "date": "April 2026",
+  "isoDate": "2026-04-28",
+  "translator": "AI-assisted translation in the spirit of Oscar Wilde",
+  "sourceText": "শেষের কবিতা — Rabindranath Tagore (1929)",
+  "sourceEdition": "Visva-Bharati edition, original Bengali",
+  "ocrVerification": "Verified against source PDF, page-by-page",
+  "chapters": 18,
+  "paragraphs": 813,
+  "languages": ["Bengali (original)", "English (translation)"],
+  "translationStyle": "Oscar Wilde — epigrammatic, sardonic, period-appropriate literary English",
+  "colophon": "This digital bilingual edition was prepared from the original Bengali text of Shesher Kobita by Rabindranath Tagore, first published in 1929. The Bengali text was transcribed via OCR and verified against the source PDF. The English translation was crafted in the literary style of Oscar Wilde, preserving Tagore's satirical wit and lyrical beauty while rendering them in epigrammatic, period-appropriate English prose.",
+  "license": "The original Bengali text is in the public domain. This translation and digital presentation are offered freely for educational and literary appreciation.",
+  "repository": "https://github.com/nicosalm/shesher-kobita-reader"
+}

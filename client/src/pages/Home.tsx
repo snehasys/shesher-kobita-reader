@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { BookOpen, Feather, Moon, Sun, BookMarked, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import bookData from "@/data/bookData.json";
+import editionData from "@/data/edition.json";
 import type { BookData } from "@/lib/types";
 import { useTheme } from "@/contexts/ThemeContext";
 import { getStoredProgress, formatTimeAgo, clearProgress, type ReadingProgress } from "@/hooks/useReadingProgress";
@@ -110,6 +111,100 @@ export default function Home() {
             </Link>
           </motion.div>
         </div>
+      </section>
+
+      {/* Edition Colophon / Watermark */}
+      <section className="max-w-3xl mx-auto px-6 pt-10 pb-2">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, delay: 0.3 }}
+          className="relative border border-border/40 rounded-sm bg-card/50 backdrop-blur-sm overflow-hidden"
+        >
+          {/* Decorative corner flourishes */}
+          <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-sienna/30 rounded-tl-sm" style={{ borderColor: 'var(--color-sienna)' }} />
+          <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-sienna/30 rounded-tr-sm" style={{ borderColor: 'var(--color-sienna)' }} />
+          <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-sienna/30 rounded-bl-sm" style={{ borderColor: 'var(--color-sienna)' }} />
+          <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-sienna/30 rounded-br-sm" style={{ borderColor: 'var(--color-sienna)' }} />
+
+          <div className="px-8 py-8 sm:px-12 sm:py-10 text-center">
+            {/* Edition title */}
+            <p
+              className="text-xs tracking-[0.35em] uppercase text-muted-foreground/60 mb-4"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              Colophon
+            </p>
+
+            <h2
+              className="text-xl sm:text-2xl text-foreground/80 font-light mb-1"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              {editionData.edition}
+            </h2>
+
+            <p
+              className="text-sm text-muted-foreground/70 mb-6"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              {editionData.date} &middot; v{editionData.version}
+            </p>
+
+            {/* Ornamental rule */}
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="h-px w-16 bg-border/60" />
+              <Feather size={14} className="text-muted-foreground/40" />
+              <div className="h-px w-16 bg-border/60" />
+            </div>
+
+            {/* Colophon text */}
+            <p
+              className="text-sm text-foreground/60 leading-relaxed max-w-xl mx-auto mb-6 italic"
+              style={{ fontFamily: 'var(--font-serif)' }}
+            >
+              {editionData.colophon}
+            </p>
+
+            {/* Edition details grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-3 max-w-lg mx-auto text-left">
+              <div>
+                <p className="text-[0.65rem] tracking-[0.2em] uppercase text-muted-foreground/50" style={{ fontFamily: 'var(--font-serif)' }}>Source</p>
+                <p className="text-xs text-foreground/60 mt-0.5" style={{ fontFamily: 'var(--font-serif)' }}>Visva-Bharati, 1929</p>
+              </div>
+              <div>
+                <p className="text-[0.65rem] tracking-[0.2em] uppercase text-muted-foreground/50" style={{ fontFamily: 'var(--font-serif)' }}>Chapters</p>
+                <p className="text-xs text-foreground/60 mt-0.5" style={{ fontFamily: 'var(--font-serif)' }}>{editionData.chapters} chapters, {editionData.paragraphs} passages</p>
+              </div>
+              <div>
+                <p className="text-[0.65rem] tracking-[0.2em] uppercase text-muted-foreground/50" style={{ fontFamily: 'var(--font-serif)' }}>Translation</p>
+                <p className="text-xs text-foreground/60 mt-0.5" style={{ fontFamily: 'var(--font-serif)' }}>Oscar Wilde literary style</p>
+              </div>
+              <div>
+                <p className="text-[0.65rem] tracking-[0.2em] uppercase text-muted-foreground/50" style={{ fontFamily: 'var(--font-serif)' }}>Languages</p>
+                <p className="text-xs text-foreground/60 mt-0.5" style={{ fontFamily: 'var(--font-serif)' }}>Bengali &amp; English</p>
+              </div>
+              <div>
+                <p className="text-[0.65rem] tracking-[0.2em] uppercase text-muted-foreground/50" style={{ fontFamily: 'var(--font-serif)' }}>Verification</p>
+                <p className="text-xs text-foreground/60 mt-0.5" style={{ fontFamily: 'var(--font-serif)' }}>PDF page-by-page</p>
+              </div>
+              <div>
+                <p className="text-[0.65rem] tracking-[0.2em] uppercase text-muted-foreground/50" style={{ fontFamily: 'var(--font-serif)' }}>Build</p>
+                <p className="text-xs text-foreground/60 mt-0.5 font-mono" style={{ fontSize: '0.7rem' }}>{editionData.buildId}</p>
+              </div>
+            </div>
+
+            {/* License note */}
+            <div className="mt-6 pt-4 border-t border-border/30">
+              <p
+                className="text-[0.65rem] text-muted-foreground/40 leading-relaxed max-w-md mx-auto"
+                style={{ fontFamily: 'var(--font-serif)' }}
+              >
+                {editionData.license}
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* Resume Reading Banner */}
